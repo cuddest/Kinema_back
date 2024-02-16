@@ -11,7 +11,9 @@ class Movie(models.Model):
     Duration = models.CharField(max_length=100)
     Director = models.CharField(max_length=100)
     Cast = models.CharField(max_length=100)
+    country = models.CharField(max_length=100)
     Description = models.TextField()
+    Category = models.CharField(max_length=100)
     Poster = models.ImageField(upload_to="movie_posters", blank=True, null=True)
 
     def __str__(self):
