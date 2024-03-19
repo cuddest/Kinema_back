@@ -27,6 +27,7 @@ class User(AbstractUser):
         "Address",
         "Date_of_Birth",
         "password",
+        "email",
     ]
 
     def __str__(self):
