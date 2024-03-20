@@ -8,4 +8,5 @@ urlpatterns = [
     path("list/", views.display_movies.as_view(), name="register"),
     path("add/", views.add_movie.as_view(), name="add_movie"),
     path("delete/", views.delete_movie.as_view(), name="delete_movie"),
+    path("details/<int:pk>", views.MovieDetailView.as_view(), name="details_movie"),
 ]

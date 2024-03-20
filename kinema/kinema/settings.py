@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     "rest_framework.authtoken",
     "movies",
     "cinephile",
+    "events",
 ]
 
 MIDDLEWARE = [
@@ -173,7 +174,6 @@ REST_FRAMEWORK = {
         "rest_framework.renderers.TemplateHTMLRenderer",  # Include TemplateHTMLRenderer for HTML responses
     ],
     # Parser classes define the type of content that DRF can parse
- 
     "DEFAULT_AUTHENTICATION_CLASSES": [
         "rest_framework_simplejwt.authentication.JWTAuthentication",
     ],

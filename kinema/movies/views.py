@@ -10,6 +10,15 @@ import cloudinary
 import cloudinary.uploader
 from dotenv import load_dotenv
 import os
+from rest_framework_simplejwt.authentication import JWTAuthentication
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.exceptions import AuthenticationFailed
+from rest_framework.status import (
+    HTTP_404_NOT_FOUND,
+    HTTP_201_CREATED,
+    HTTP_401_UNAUTHORIZED,
+    HTTP_400_BAD_REQUEST,
+)
 
 
 def upload_image_to_cloudinary(movie_id):
@@ -72,21 +81,31 @@ def get_movie_info(movie_id):
 
 
 class add_movie(generics.CreateAPIView):
-    def post(self, request):
-        movie_id = request.data.get("movie_id")
-        movie = get_movie_info(movie_id)
-        if not isinstance(movie, Movie):
-            return Response(
-                "Movie with this ID not found in the TMDB DB",
-                status=status.HTTP_404_NOT_FOUND,
-            )
+    authentication_classes = [JWTAuthentication]
+    permission_classes = [IsAuthenticated]
 
-        else:
-            movie.save()
-            return Response("created !!", status=status.HTTP_201_CREATED)
+    def post(self, request):
+        try:
+            # Check for JWT token authenticity (assuming JWTAuthentication raises AuthenticationFailed)
+            user = JWTAuthentication().authenticate(request)  # Authenticate using JWT
+            movie_id = request.data.get("movie_id")
+            movie = get_movie_info(movie_id)
+            if not isinstance(movie, Movie):
+                return Response(
+                    "Movie with this ID not found in the TMDB DB",
+                    status=HTTP_404_NOT_FOUND,
+                )
+
+            else:
+                movie.save()
+                return Response("created !!", status=HTTP_201_CREATED)
+        except AuthenticationFailed:
+            return Response("Authentication failed", status=HTTP_401_UNAUTHORIZED)
 
 
 class delete_movie(generics.DestroyAPIView):
+    authentication_classes = [JWTAuthentication]
+    permission_classes = [IsAuthenticated]
     queryset = Movie.objects.all()
     serializer_class = MovieSerializer
 
@@ -128,5 +147,14 @@ class delete_movie(generics.DestroyAPIView):
 
 
 class display_movies(generics.ListAPIView):
+    authentication_classes = [JWTAuthentication]
+    permission_classes = [IsAuthenticated]
     queryset = Movie.objects.all()
     serializer_class = MovieSerializer
+
+
+class MovieDetailView(generics.RetrieveAPIView):
+    queryset = Movie.objects.all()
+    serializer_class = MovieSerializer
+    authentication_classes = [JWTAuthentication]
+    permission_classes = [IsAuthenticated]

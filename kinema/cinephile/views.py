@@ -27,6 +27,7 @@ class RegisterView(APIView):
 @permission_classes([])
 class LoginView(APIView):
     def post(self, request):
+
         email = request.data.get("email")
         password = request.data.get("password")
         username = request.data.get("username")
@@ -52,6 +53,7 @@ class LoginView(APIView):
 
 class UserView(APIView):
     authentication_classes = [JWTAuthentication]
+    permission_classes = [permissions.IsAuthenticated]
 
     def get(self, request):
         username = request.data.get("username")
@@ -62,6 +64,7 @@ class UserView(APIView):
 
 class LogoutView(APIView):
     authentication_classes = [JWTAuthentication]
+    permission_classes = [permissions.IsAuthenticated]
 
     def post(self, request):
         username = request.data["username"]
