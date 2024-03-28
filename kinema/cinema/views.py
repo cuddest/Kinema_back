@@ -1,6 +1,6 @@
 from django.views.generic import CreateView, UpdateView, DeleteView
 from .models import cinema
-from .serializer import EventSerializer
+from .serializer import cinemaSerializer
 from rest_framework import generics, permissions, status
 from rest_framework_simplejwt.authentication import JWTAuthentication
 from rest_framework.response import Response
@@ -62,11 +62,14 @@ class cinemaDeleteView(generics.DestroyAPIView):
                 {"message": "Invalid request"},
                 status=status.HTTP_400_BAD_REQUEST,
             )
+
+
 class cinemaListView(generics.ListAPIView):
     queryset = cinema.objects.all()
     serializer_class = cinemaSerializer
     authentication_classes = [JWTAuthentication]
     permission_classes = [IsAuthenticated]
+
 
 class cinemaDetailView(generics.RetrieveAPIView):
     queryset = cinema.objects.all()

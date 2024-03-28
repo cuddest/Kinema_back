@@ -16,7 +16,6 @@ Including another URLconf
 
 from django.contrib import admin
 from django.urls import path, include
-import movies, cinephile
 
 
 urlpatterns = [
@@ -24,4 +23,6 @@ urlpatterns = [
     path("movies/", include("movies.urls")),
     path("cinephile/", include("cinephile.urls")),
     path("events/", include("events.urls")),
+    path("review/", include("review.urls")),
+    path("cinema/", include("cinema.urls")),
 ]

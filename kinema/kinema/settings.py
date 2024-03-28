@@ -49,6 +49,7 @@ INSTALLED_APPS = [
     "cinephile",
     "events",
     "cinema",
+    "review",
 ]
 
 MIDDLEWARE = [
